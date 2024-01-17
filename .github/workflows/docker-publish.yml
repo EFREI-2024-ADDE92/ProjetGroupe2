@@ -16,14 +16,13 @@ jobs:
     - name: Build Docker image
       run: docker build -t adde92-project .
 
-    - name: 'Login via Azure CLI'
-      uses: azure/login@v1
-      with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+    # - name: 'Login via Azure CLI'
+    #   uses: azure/login@v1
+    #   with:
+    #       creds: ${{ secrets.AZURE_CREDENTIALS }}
 
     - name: Push Docker image
       run: |
+        docker login -u ${{ secrets.REGISTRY_USERNAME }} -p ${{ secrets.REGISTRY_PASSWORD }} ${{ secrets.REGISTRY_LOGIN_SERVER }}
         docker tag adde92-project ${{ secrets.REGISTRY_LOGIN_SERVER }}/adde92-project
         docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/adde92-project
-
-    # docker login -u ${{ secrets.REGISTRY_USERNAME }} -p ${{ secrets.REGISTRY_USERNAME }} ${{ secrets.REGISTRY_LOGIN_SERVER }}
