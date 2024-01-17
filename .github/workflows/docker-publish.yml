@@ -13,8 +13,8 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    # - name: Build Docker image
-    #   run: docker build -t adde92-project .
+    - name: Build Docker image
+      run: docker build -t adde92-project .
 
     - name: 'Login via Azure CLI'
       uses: azure/login@v1
