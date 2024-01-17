@@ -1,63 +1,40 @@
-# name: Docker Publish
+name: Docker Publish
 
-# on:
-#   push:
-#     branches:
-#       - main
-
-# jobs:
-#   build:
-#     runs-on: ubuntu-latest
-
-#     steps:
-#     - name: Checkout repository
-#       uses: actions/checkout@v2
-
-#     - name: Build Docker image
-#       run: docker build -t adde92-project .
-
-#     # - name: 'Login via Azure CLI'
-#     #   uses: azure/login@v1
-#     #   with:
-#     #       creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-#     - name: Push Docker image
-#       run: |
-#         docker login -u ${{ secrets.REGISTRY_USERNAME }} -p ${{ secrets.REGISTRY_PASSWORD }} ${{ secrets.REGISTRY_LOGIN_SERVER }}
-#         docker tag adde92-project ${{ secrets.REGISTRY_LOGIN_SERVER }}/adde92-project
-#         docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/adde92-project
-
-
-
-name: Docker Build and Push Images on Github Action
 on:
   push:
     branches:
-      - docker #
+      - main
+
 jobs:
-  build-and-push:
+  build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: 'Checkout GitHub Action'
-        uses: actions/checkout@v2
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-      - name: 'Login via Azure CLI'
-        uses: azure/login@v1
-        with:
+    - name: Build Docker image
+      run: docker build -t adde92-project .
+
+    - name: 'Login via Azure CLI'
+      uses: azure/login@v1
+      with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-      
-      - name: 'Login Docker'
-        uses: azure/docker-login@v1
-        with:
-          login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
-          username: ${{ secrets.REGISTRY_USERNAME }}
-          password: ${{ secrets.REGISTRY_PASSWORD }}
-        
-      - name: 'Build and Push'
-        run: |
-          docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/irisapp:${{ github.sha }}
-          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/irisapp:${{ github.sha }}
 
-      - name: Deploy to Azure Container Apps
-        run: |
-          az containerapp create --name adde92-project-gr2 --resource-group ${{ secrets.RESOURCE_GROUP }} --image ${{ secrets.REGISTRY_LOGIN_SERVER }}/adde92-project --cpu 1 --memory 1.5Gi
+      # - name: 'Login Docker'
+      #   uses: azure/docker-login@v1
+      #   with:
+      #     login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+      #     username: ${{ secrets.REGISTRY_USERNAME }}
+      #     password: ${{ secrets.REGISTRY_PASSWORD }}
+
+    - name: Push Docker image
+      run: |
+        docker login -u ${{ secrets.REGISTRY_USERNAME }} -p ${{ secrets.REGISTRY_PASSWORD }} ${{ secrets.REGISTRY_LOGIN_SERVER }}
+        docker build -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/adde92-project
+      # docker tag adde92-gr2 ${{ secrets.REGISTRY_LOGIN_SERVER }}/adde92-project
+        docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/adde92-project
+
+    - name: Deploy to Azure Container Apps
+      run: |
+        az containerapp create --name adde92-project-gr2 --resource-group ${{ secrets.RESOURCE_GROUP }} --image ${{ secrets.REGISTRY_LOGIN_SERVER }}/adde92-project --cpu 1 --memory 1.5Gi
