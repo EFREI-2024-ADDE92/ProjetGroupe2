@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 model = joblib.load('knn_model.joblib')
 
-@app.route('/predict', methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
 def predict():
     if request.method == 'GET':
         # Traitement des paramètres de la chaîne de requête pour une requête GET
@@ -28,4 +28,4 @@ def predict():
     return jsonify(prediction.tolist())
 
 if __name__ == '__main__':
-    app.run(port=5000)
+    app.run(host='0.0.0.0', port=5000)
