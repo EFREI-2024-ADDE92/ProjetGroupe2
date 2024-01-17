@@ -1,0 +1,14 @@
+name: Docker Build and Push Images on Github Action
+on:
+  push:
+    branches:
+      - docker #
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      #- name: Hadolint
+      #  run: docker push ailogos/weitherapp:0.0.1
+      - name: Build docker image
+        run: docker build . -t irisapp:0.0.1
