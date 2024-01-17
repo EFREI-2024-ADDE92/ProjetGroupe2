@@ -21,7 +21,7 @@ jobs:
     - name: Push Docker image
       run: |
         docker login -u ${{ secrets.REGISTRY_USERNAME }} -p ${{ secrets.REGISTRY_PASSWORD }} ${{ secrets.REGISTRY_LOGIN_SERVER }}
-        docker build -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/adde92-project
+        docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/adde92-project
         docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/adde92-project
 
     - name: Deploy to Azure Container Apps
