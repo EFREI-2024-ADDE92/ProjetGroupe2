@@ -1,20 +1,31 @@
-# Import des bibliothèques
-from sklearn.model_selection import train_test_split
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.datasets import load_iris
+from flask import Flask, request, jsonify
 import joblib
 
-# Chargement du dataset
-iris = load_iris()
-X_train, X_test, y_train, y_test = train_test_split(iris.data, iris.target, test_size=0.2, random_state=42)
+app = Flask(__name__)
 
-# Entraînement du modèle
-knn_model = KNeighborsClassifier(n_neighbors=3)
-knn_model.fit(X_train, y_train)
+model = joblib.load('knn_model.joblib')
 
-# Évaluation du modèle
-accuracy = knn_model.score(X_test, y_test)
-print(f"Accuracy du modèle : {accuracy}")
+@app.route('/predict', methods=['GET', 'POST'])
+def predict():
+    if request.method == 'GET':
+        # Traitement des paramètres de la chaîne de requête pour une requête GET
+        sepal_length = float(request.args.get('sepal_length'))
+        sepal_width = float(request.args.get('sepal_width'))
+        petal_length = float(request.args.get('petal_length'))
+        petal_width = float(request.args.get('petal_width'))
+    elif request.method == 'POST':
+        # Traitement du corps JSON pour une requête POST
+        data = request.get_json(force=True)
+        sepal_length = float(data['sepal_length'])
+        sepal_width = float(data['sepal_width'])
+        petal_length = float(data['petal_length'])
+        petal_width = float(data['petal_width'])
+    else:
+        return jsonify({"error": "Method not allowed"}), 405
 
-# Exportation du modèle
-joblib.dump(knn_model, 'knn_model.joblib')
+    features = [sepal_length, sepal_width, petal_length, petal_width]
+    prediction = model.predict([features])
+    return jsonify(prediction.tolist())
+
+if __name__ == '__main__':
+    app.run(port=5000)
