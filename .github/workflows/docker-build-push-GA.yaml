@@ -42,10 +42,10 @@ jobs:
       - name: Build and deploy Container App
         uses: azure/container-apps-deploy-action@v1
         with:
-          appSourcePath: ${{ github.workspace }}/src
           acrName: efreibigdata
           containerAppName: iris-ProjetGroupe2
           resourceGroup: ADDE92-CTP
+          imageToDeploy: efreibigdata.azurecr.io/irisapp:${{ github.sha }}
 
       # - name: Build docker image
       #   uses: docker build . -t irisapp:0.0.1
