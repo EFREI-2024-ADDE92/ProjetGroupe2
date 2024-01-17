@@ -11,7 +11,7 @@ jobs:
         run: echo 'Starting Docker Build and Publish'
 
       - name: 'Docker Build'
-        run: docker build -t ${{ secrets.ACR_SERVER }}/api_ml:${{ github.run_number }} .
+        uses: docker build -t ${{ secrets.ACR_SERVER }}/api_ml:${{ github.run_number }} .
 
       - name: 'Docker Login'
         uses: azure/docker-login@v1
