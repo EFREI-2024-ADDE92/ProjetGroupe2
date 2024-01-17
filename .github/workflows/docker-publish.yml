@@ -24,6 +24,9 @@ jobs:
         docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/adde92-project
         docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/adde92-project
 
+    - name: Create Azure container environment
+      run: az containerapp env create -n gr2-container-env -g  ${{ secrets.RESOURCE_GROUP }} --location francecentral
+
     - name: Deploy to Azure Container Apps
       run: |
-        az containerapp create --name adde92-project-gr2 --resource-group ${{ secrets.RESOURCE_GROUP }} --image ${{ secrets.REGISTRY_LOGIN_SERVER }}/adde92-project --cpu 1 --memory 1.5Gi
+        az containerapp create --name adde92-project-gr2 --resource-group ${{ secrets.RESOURCE_GROUP }} --image ${{ secrets.REGISTRY_LOGIN_SERVER }}/adde92-project --cpu 1 --memory 1.5Gi --environment gr2-container-env
