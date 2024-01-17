@@ -39,7 +39,7 @@ jobs:
             docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/adde92-project:latest
             docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/adde92-project:latest
 
-    - - name: Deploy to Azure Container 
+    - name: Create Azure container environment
       run: az containerapp env --name group-2-container-env --resource-group  ${{ secrets.RESOURCE_GROUP }}
 
     - name: Deploy to Azure Container 
