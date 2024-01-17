@@ -48,3 +48,6 @@ jobs:
         --memory 1 \
         --registry-username ${{ secrets.REGISTRY_USERNAME }} \
         --registry-password ${{ secrets.REGISTRY_PASSWORD }}  \
+        --location francecentral \
+        --target-port 80
+        --location -l francecentral
