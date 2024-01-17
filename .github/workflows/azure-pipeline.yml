@@ -11,24 +11,24 @@ jobs:
         run: echo 'Starting Docker Build and Publish'
 
       - name: 'Docker Build'
-        run: docker build -t $(ACR_SERVER)/api_ml:$(Build.BuildId) .
+        run: docker build -t ${{ secrets.ACR_SERVER }}/api_ml:${{ github.run_number }} .
 
       - name: 'Docker Login'
         uses: azure/docker-login@v1
         with:
-          login-server: ${{ env.ACR_SERVER }}
+          login-server: ${{ secrets.ACR_SERVER }}
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
 
       - name: 'Docker Push'
-        run: docker push $(ACR_SERVER)/api_ml:$(Build.BuildId)
+        run: docker push ${{ secrets.ACR_SERVER }}/api_ml:${{ github.run_number }}
 
       - name: 'Enable ACR Admin'
-        run: az acr update -n $(ACR_NAME) --admin-enabled true
+        run: az acr update -n ${{ secrets.ACR_NAME }} --admin-enabled true
         env:
           AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: 'Create ACR Build Task'
-        run: az acr task create --name buildtask --registry $(ACR_NAME) --image api_ml:$(Build.BuildId) --context https://github.com/ORG/REPO.git --file Dockerfile --branch main
+        run: az acr task create --name buildtask --registry ${{ secrets.ACR_NAME }} --image api_ml:${{ github.run_number }} --context https://github.com/ORG/REPO.git --file Dockerfile --branch main
         env:
           AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
