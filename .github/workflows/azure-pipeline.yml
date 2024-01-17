@@ -6,37 +6,38 @@ on:
 
 pool:
   vmImage: 'ubuntu-latest'
+jobs :
+  build :
+    steps:
+      - script: echo 'Starting Docker Build and Publish'
+        displayName: 'Starting Docker Build and Publish'
 
-steps:
-  - script: echo 'Starting Docker Build and Publish'
-    displayName: 'Starting Docker Build and Publish'
+      - script: docker build -t $(ACR_SERVER)/api_ml:$(Build.BuildId) .
+        displayName: 'Docker Build'
 
-  - script: docker build -t $(ACR_SERVER)/api_ml:$(Build.BuildId) .
-    displayName: 'Docker Build'
+      - task: Docker@2
+        inputs:
+          command: 'login'
+          containerRegistry: '$(ACR_SERVER)'
+          displayName: 'Docker Login'
 
-  - task: Docker@2
-    inputs:
-      command: 'login'
-      containerRegistry: '$(ACR_SERVER)'
-      displayName: 'Docker Login'
+      - script: docker push $(ACR_SERVER)/api_ml:$(Build.BuildId)
+        displayName: 'Docker Push'
 
-  - script: docker push $(ACR_SERVER)/api_ml:$(Build.BuildId)
-    displayName: 'Docker Push'
+      - task: AzureCLI@2
+        inputs:
+          azureSubscription: $(AZURE_CREDENTIALS)
+          scriptType: 'bash'
+          scriptLocation: 'inlineScript'
+          inlineScript: |
+            az acr update -n $(ACR_NAME) --admin-enabled true
+        displayName: 'Enable ACR Admin'
 
-  - task: AzureCLI@2
-    inputs:
-      azureSubscription: $(AZURE_CREDENTIALS)
-      scriptType: 'bash'
-      scriptLocation: 'inlineScript'
-      inlineScript: |
-        az acr update -n $(ACR_NAME) --admin-enabled true
-    displayName: 'Enable ACR Admin'
-
-  - task: AzureCLI@2
-    inputs:
-      azureSubscription: $(AZURE_CREDENTIALS)
-      scriptType: 'bash'
-      scriptLocation: 'inlineScript'
-      inlineScript: |
-        az acr task create --name buildtask --registry $(ACR_NAME) --image api_ml:$(Build.BuildId) --context https://github.com/ORG/REPO.git --file Dockerfile --branch main
-    displayName: 'Create ACR Build Task'
+      - task: AzureCLI@2
+        inputs:
+          azureSubscription: $(AZURE_CREDENTIALS)
+          scriptType: 'bash'
+          scriptLocation: 'inlineScript'
+          inlineScript: |
+            az acr task create --name buildtask --registry $(ACR_NAME) --image api_ml:$(Build.BuildId) --context https://github.com/ORG/REPO.git --file Dockerfile --branch main
+        displayName: 'Create ACR Build Task'
