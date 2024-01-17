@@ -40,4 +40,4 @@ jobs:
             docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/adde92-project:latest
 
     - name: Deploy to Azure Container 
-      run: az containerapp create --resource-group ${{ secrets.RESOURCE_GROUP }} --name group-2-container --image ${{ secrets.REGISTRY_LOGIN_SERVER }}/adde92-project:latest --cpu 1 --memory 1 --registry-server ${{ secrets.REGISTRY_LOGIN_SERVER }} --registry-username ${{ secrets.REGISTRY_USERNAME }} --registry-password ${{ secrets.REGISTRY_PASSWORD }} --ingress external --target-port 80 --environment template-project
+      run: az containerapp create --resource-group ${{ secrets.RESOURCE_GROUP }} --name group-2-container --image ${{ secrets.REGISTRY_LOGIN_SERVER }}/adde92-project:latest --cpu 1 --memory 2 --registry-server ${{ secrets.REGISTRY_LOGIN_SERVER }} --registry-username ${{ secrets.REGISTRY_USERNAME }} --registry-password ${{ secrets.REGISTRY_PASSWORD }} --ingress external --target-port 80 --environment template-project
