@@ -44,7 +44,7 @@ jobs:
         with:
           acrName: efreibigdata
           containerAppName: adde92-gr2-container
-          resourceGroup: ADDE92-CTP
+          resourceGroup: ${{ secrets.RESOURCE_GROUP }}
           imageToDeploy: efreibigdata.azurecr.io/irisapp:${{ github.sha }}
           port: 5000
       # - name: Build docker image
