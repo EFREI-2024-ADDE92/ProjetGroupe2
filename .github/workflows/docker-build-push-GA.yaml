@@ -12,3 +12,7 @@ jobs:
       #  run: docker push ailogos/weitherapp:0.0.1
       - name: Build docker image
         run: docker build . -t irisapp:0.0.1
+      - name: 'Login via Azure CLI'
+          uses: azure/login@v1
+          with:
+            creds: ${{ secrets.AZURE_CREDENTIALS }}
