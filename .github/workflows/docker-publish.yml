@@ -18,9 +18,9 @@ jobs:
 
     - name: Push Docker image
       run: |
-        echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
-        docker tag adde92-project ${{secrets.REGISTRY_LOGIN_SERVER}}/adde92-project
-        docker push ${{secrets.REGISTRY_LOGIN_SERVER}}/adde92-project
+        echo ${{ secrets.DOCKER_PASSWORD }} |sudo docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+        sudo docker tag adde92-project ${{secrets.REGISTRY_LOGIN_SERVER}}/adde92-project
+        sudo docker push ${{secrets.REGISTRY_LOGIN_SERVER}}/adde92-project
 
 # AZURE_CREDENTIALS : compte de service pour s'authentifier avec l'API Azure
 # REGISTRY_LOGIN_SERVER : lien du serveur de la registry (efreibigdata.azurecr.io)
