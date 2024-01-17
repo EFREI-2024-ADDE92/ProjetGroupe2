@@ -3,6 +3,7 @@ import joblib
 
 app = Flask(__name__)
 
+<<<<<<< HEAD
 model = joblib.load('knn_model.joblib')
 
 @app.route('/', methods=['GET', 'POST'])
@@ -28,4 +29,18 @@ def predict():
     return jsonify(prediction.tolist())
 
 if __name__ == '__main__':
+=======
+# Charger le modèle
+model = joblib.load('iris_knn_model.joblib')
+
+@app.route('/predict', methods=['POST'])
+def predict():
+    data = request.get_json()
+    features = data.get('features')
+    prediction = model.predict([features])
+    return jsonify({'prediction': int(prediction[0])})
+
+if __name__ == '__main__':
+    # app.run(debug=True)
+>>>>>>> 62f2a3d9e2cc7fbddaecc901c2dbef5399d7d99f
     app.run(host='0.0.0.0', port=5000)
