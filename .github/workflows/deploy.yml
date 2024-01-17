@@ -48,5 +48,3 @@ jobs:
         --memory 1 \
         --registry-username ${{ secrets.REGISTRY_USERNAME }} \
         --registry-password ${{ secrets.REGISTRY_PASSWORD }}  \
-        --location francecentral \
-        --port 80 
