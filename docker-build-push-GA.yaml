@@ -2,7 +2,7 @@ name: Docker Build and Push Images on Github Action
 on:
   push:
     branches:
-      - docker
+      - docker #
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
