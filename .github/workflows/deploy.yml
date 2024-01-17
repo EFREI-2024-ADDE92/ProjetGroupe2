@@ -40,4 +40,4 @@ jobs:
             docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/adde92-project:latest
 
     - name: Deploy to Azure Container 
-      run: az container create --resource-group ${{ secrets.RESOURCE_GROUP }} --name Group2Container --image ${{ secrets.REGISTRY_LOGIN_SERVER }}/adde92-project:latest --cpu 1 --memory 1 --registry-login-server efreibigdata.azurecr.io  --registry-username ${{ secrets.REGISTRY_USERNAME }} --registry-password ${{ secrets.REGISTRY_PASSWORD }}  --location francecentral
+      run: az container create --resource-group ${{ secrets.RESOURCE_GROUP }} --name group-2-container --image ${{ secrets.REGISTRY_LOGIN_SERVER }}/adde92-project:latest --cpu 1 --memory 1 --registry-login-server ${{ secrets.REGISTRY_LOGIN_SERVER }}  --registry-username ${{ secrets.REGISTRY_USERNAME }} --registry-password ${{ secrets.REGISTRY_PASSWORD }}  --location francecentral
