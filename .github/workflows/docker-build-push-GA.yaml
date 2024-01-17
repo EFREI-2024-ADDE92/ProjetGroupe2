@@ -46,7 +46,7 @@ jobs:
           containerAppName: adde92-gr2-container
           resourceGroup: ADDE92-CTP
           imageToDeploy: efreibigdata.azurecr.io/irisapp:${{ github.sha }}
-
+          port: 5000
       # - name: Build docker image
       #   uses: docker build . -t irisapp:0.0.1
       
