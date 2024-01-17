@@ -1,5 +1,8 @@
-trigger:
-  - Arnaud_API
+on:
+  push :
+    branch:
+      - Arnaud_API
+
 
 pool:
   vmImage: 'ubuntu-latest'
