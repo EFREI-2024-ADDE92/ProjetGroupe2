@@ -8,7 +8,7 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 COPY requirements.txt .
 RUN pip install --no-cache-dir --requirement requirements.txt
 
-EXPOSE 5000
+EXPOSE 80
 
 COPY . .
 
