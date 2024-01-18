@@ -1,6 +1,6 @@
 FROM ubuntu:20.04
 
-FROM python:3.11-alpine3.17
+# FROM python:3.11-alpine3.17
 
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get upgrade -yq && \
