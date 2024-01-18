@@ -24,12 +24,12 @@ jobs:
 
     - name: Check dockerfile with hadolint
       run: |
-        docker run --rm -i hadolint/hadolint < dockerfile
+        docker run --rm -i hadolint/hadolint < Dockerfile
         if grep -q "warning" hadolint_output.txt; then
           echo "Hadolint found warnings in Dockerfile. Fix the warnings and try again."
           exit 1
         fi
-        
+
     - name: 'Login via Azure CLI'
       uses: azure/login@v1
       with:
