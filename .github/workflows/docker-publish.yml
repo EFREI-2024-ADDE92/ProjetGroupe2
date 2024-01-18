@@ -10,6 +10,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Install hadolint
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y hadolint
+        
     - name: Lint Dockerfile
       run: hadolint Dockerfile
     
