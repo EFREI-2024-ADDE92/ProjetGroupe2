@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+# FROM ubuntu:20.04
 
 FROM python:3.11-alpine3.17
 
