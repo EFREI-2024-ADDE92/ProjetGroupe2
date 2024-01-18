@@ -17,4 +17,4 @@ COPY . .
 
 EXPOSE 5000
 
-CMD ["docker-compose", "up"]
+CMD ["python3", "app.py"]
