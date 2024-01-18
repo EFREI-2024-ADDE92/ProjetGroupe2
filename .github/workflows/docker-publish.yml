@@ -6,12 +6,29 @@ on:
       - main
 
 jobs:
-  build:
+  lint-build-push-deploy:
     runs-on: ubuntu-latest
 
     steps:
+    # - name: Install Hadolint
+    #   run: |
+    #     wget -O hadolint https://github.com/hadolint/hadolint/releases/latest/download/hadolint-Linux-x86_64
+    #     chmod +x hadolint
+    #     sudo mv hadolint /usr/local/bin/
+    
+    # - name: Lint Dockerfile
+    #   run: hadolint Dockerfile
+    
     - name: Checkout repository
       uses: actions/checkout@v2
+
+    - name: Check dockerfile with hadolint
+      run: |
+        docker run --rm -i hadolint/hadolint < Dockerfile
+        if grep -q "warning" hadolint_output.txt; then
+          echo "Hadolint found warnings in Dockerfile. Fix the warnings and try again."
+          exit 1
+        fi
 
     - name: 'Login via Azure CLI'
       uses: azure/login@v1
