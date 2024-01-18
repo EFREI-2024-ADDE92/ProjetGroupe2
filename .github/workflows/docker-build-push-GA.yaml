@@ -46,10 +46,11 @@ jobs:
           containerAppName: adde92-gr2-container
           resourceGroup: ${{ secrets.RESOURCE_GROUP }}
           imageToDeploy: efreibigdata.azurecr.io/irisapp:${{ github.sha }}
-          port: 5000
+          targetPort: 5000
+
       # - name: Build docker image
       #   uses: docker build . -t irisapp:0.0.1
       
       # - name: Deploy to Azure Container Apps
       #   run: |
-      #   az containerapp create --name adde92-gr2-container --resource-group ${{ secrets.RESOURCE_GROUP }} --image ${{ secrets.REGISTRY_LOGIN_SERVER }}/adde92-project --cpu 1 --memory 2 --registry-server ${{ secrets.REGISTRY_LOGIN_SERVER }} --registry-username ${{ secrets.REGISTRY_USERNAME }} --registry-password ${{ secrets.REGISTRY_PASSWORD }} --environment gr2-container-env --ingress external --target-port 5000
+      az containerapp create --name adde92-gr2-container --resource-group ${{ secrets.RESOURCE_GROUP }} --image ${{ secrets.REGISTRY_LOGIN_SERVER }}/adde92-project --cpu 1 --memory 2 --registry-server ${{ secrets.REGISTRY_LOGIN_SERVER }} --registry-username ${{ secrets.REGISTRY_USERNAME }} --registry-password ${{ secrets.REGISTRY_PASSWORD }} --environment gr2-container-env --ingress external --target-port 5000 --min-replicas 0 --max-replicas 5 --scale-rule-name autoscaling-rule --scale-rule-type http --scale-rule-http-concurrency 100
