@@ -8,7 +8,7 @@ COPY requirements.txt .
 
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get upgrade -yq && \
-    apt-get install -y --no-install-recommends python3=3.10.30 python3-pip=22.0.0 && \
+    apt-get install -y --no-install-recommends python3=3.10.03 python3-pip=22.0.0 && \
     rm -rf /var/lib/apt/lists/* && \
     pip3 install --no-cache-dir -r requirements.txt
 
