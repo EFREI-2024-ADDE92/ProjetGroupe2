@@ -8,13 +8,12 @@ COPY requirements.txt .
 
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get upgrade -yq && \
-    apt-get install -y --no-install-recommends python3 python3-pip && \
+    apt-get install -y --no-install-recommends python3=3.8.10 python3-pip=20.0.2 && \
     rm -rf /var/lib/apt/lists/* && \
     pip3 install --no-cache-dir -r requirements.txt
 
 # Display Python version
 RUN python3 --version
-
 
 # Display Pip version
 RUN pip3 --version
