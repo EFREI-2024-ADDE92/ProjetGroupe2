@@ -13,10 +13,10 @@ COPY requirements.txt .
 
 RUN pip3 install --no-cache-dir -r requirements.txt
 
-# RUN apk add libcrypto3=3.1.1-r1 libssl3=3.1.1-r1 --repository=https://dl-cdn.alpinelinux.org/alpine/edge/main --no-cache
-
 COPY . .
 
 EXPOSE 5000
 
 CMD ["python3", "app.py"]
+
+CMD ["docker-compose", "up"]
