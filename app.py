@@ -1,12 +1,31 @@
 from flask import Flask, request, jsonify
 import joblib
-
+from prometheus_client import make_wsgi_app, Counter, Histogram
+from werkzeug.middleware.dispatcher import DispatcherMiddleware
+import time
 app = Flask(__name__)
 
 model = joblib.load('iris_knn_model.joblib')
 
+
+app.wsgi_app = DispatcherMiddleware(app.wsgi_app, {
+    '/metrics': make_wsgi_app()
+})
+
+REQUEST_COUNT = Counter(
+    'app_request_count',
+    'Application Request Count',
+    ['method', 'endpoint', 'http_status']
+)
+REQUEST_LATENCY = Histogram(
+    'app_request_latency_seconds',
+    'Application Request Latency',
+    ['method', 'endpoint']
+)
 @app.route('/predict', methods=['GET', 'POST'])
 def predict():
+    start_time = time.time()
+    REQUEST_COUNT.labels('GET', '/', 200).inc()
     if request.method == 'GET':
         # Traitement des paramètres de la chaîne de requête pour une requête GET
         sepal_length = float(request.args.get('sepal_length'))
@@ -25,6 +44,7 @@ def predict():
 
     features = [sepal_length, sepal_width, petal_length, petal_width]
     prediction = model.predict([features])
+    REQUEST_LATENCY.labels('GET', '/').observe(time.time() - start_time)
     return jsonify(prediction.tolist())
 
 if __name__ == '__main__':
