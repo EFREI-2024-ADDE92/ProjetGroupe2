@@ -44,8 +44,11 @@ def predict():
 
     features = [sepal_length, sepal_width, petal_length, petal_width]
     prediction = model.predict([features])
+
+    mapping_labels = {0: 'setosa', 1: 'versicolor', 2: 'virginica'}
+    label = mapping_labels[prediction[0]]
     REQUEST_LATENCY.labels('GET', '/').observe(time.time() - start_time)
-    return jsonify(prediction.tolist())
+    return jsonify(f"Prediction: {label}")
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0',port=5000)
